@@ -1,0 +1,64 @@
+﻿@model IEnumerable<QuanLyNhanSu.Models.PhongBan>
+
+@{
+    ViewData["Title"] = "Quản lý phòng ban";
+}
+
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"><strong>Quản lý</strong> Phòng ban</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="align-middle" data-feather="plus"></i> Thêm phòng ban mới
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert-message">@TempData["Success"]</div>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div class="alert-message">@TempData["Error"]</div>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover my-0">
+                <thead>
+                    <tr>
+                        <th>Mã phòng</th>
+                        <th>Tên phòng ban</th>
+                        <th>Mô tả chức năng</th>
+                        <th class="text-center">Số nhân sự</th>
+                        <th class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><strong>#@item.MaPhong</strong></td>
+                            <td class="fw-bold text-primary">@item.TenPhong</td>
+                            <td>@(string.IsNullOrEmpty(item.MoTa) ? "Chưa có mô tả" : item.MoTa)</td>
+                            <td class="text-center">
+                                <span class="badge bg-info">@item.NhanViens.Count nhân viên</span>
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@item.MaPhong" class="btn btn-sm btn-warning">Sửa</a>
+                                <form asp-action="Delete" asp-route-id="@item.MaPhong" method="post" class="d-inline"
+                                      onsubmit="return confirm('Bạn có chắc chắn muốn xóa phòng @item.TenPhong không?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

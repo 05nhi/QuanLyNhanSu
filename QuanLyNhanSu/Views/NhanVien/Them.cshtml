@@ -1,0 +1,55 @@
+﻿@model QuanLyNhanSu.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Thêm mới nhân viên";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0 fs-5">THÊM NHÂN VIÊN MỚI</h4>
+        </div>
+        <div class="card-body">
+            <!-- asp-action="Create" giữ nguyên để submit form về hàm POST Create trong NhanVienController -->
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="HoTen" class="form-label font-weight-bold">Họ và Tên <span class="text-danger">*</span></label>
+                    <input asp-for="HoTen" class="form-control" placeholder="Nhập họ và tên..." required />
+                    <span asp-validation-for="HoTen" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="example@company.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="SoDienThoai" class="form-label">Số điện thoại</label>
+                    <input asp-for="SoDienThoai" class="form-control" placeholder="Nhập số điện thoại..." />
+                    <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ChucVu" class="form-label">Chức vụ</label>
+                    <input asp-for="ChucVu" class="form-control" placeholder="Ví dụ: Nhân viên, Trưởng phòng..." />
+                    <span asp-validation-for="ChucVu" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MaPhong" class="form-label">Phòng ban</label>
+                    <select asp-for="MaPhong" class="form-select" asp-items="ViewBag.MaPhong">
+                        <option value="">-- Chọn phòng ban --</option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+                    <button type="submit" class="btn btn-success px-4">Lưu thông tin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

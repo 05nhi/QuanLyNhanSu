@@ -1,0 +1,59 @@
+﻿@model QuanLyNhanSu.Models.TaiKhoan
+
+@{
+    ViewData["Title"] = "Cấp tài khoản mới";
+}
+
+<div class="container-fluid p-0">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Cấp tài khoản đăng nhập mới</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Liên kết hồ sơ nhân viên</label>
+                            <select asp-for="MaNv" class="form-select" asp-items="ViewBag.MaNv">
+                                <option value="">-- Không liên kết (Tài khoản quản trị kỹ thuật) --</option>
+                            </select>
+                            <small class="text-muted">Chỉ hiển thị các nhân viên chưa được cấp tài khoản.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên đăng nhập (Username) <span class="text-danger">*</span></label>
+                            <input asp-for="Username" class="form-control" placeholder="Ví dụ: nv2, tranvanb..." required />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mật khẩu khởi tạo <span class="text-danger">*</span></label>
+                            <input asp-for="Password" class="form-control" value="123456" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên hiển thị</label>
+                            <input asp-for="HoTen" class="form-control" placeholder="Bỏ trống sẽ tự lấy theo tên nhân viên liên kết" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Vai trò (Role)</label>
+                            <select asp-for="Role" class="form-select">
+                                <option value="User" selected>User (Nhân viên thông thường)</option>
+                                <option value="Admin">Admin (Quản trị viên)</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                            <button type="submit" class="btn btn-primary px-4">Tạo tài khoản</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

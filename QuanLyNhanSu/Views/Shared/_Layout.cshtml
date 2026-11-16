@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>@ViewData["Title"] - Quản Lý Nhân Sự</title>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="~/img/icons/icon-48x48.png" />
+
+	<!-- Đường dẫn chuẩn từ thư mục wwwroot -->
+	<link href="~/css/app.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+	@{
+		var role = Context.Session.GetString("Role");
+		var hoTen = Context.Session.GetString("HoTen") ?? Context.Session.GetString("Username") ?? "Người dùng";
+	}
+
+	<div class="wrapper">
+		<!-- MENU BÊN TRÁI (SIDEBAR) -->
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				@if (role == "Admin")
+				{
+					<a class="sidebar-brand" asp-controller="NhanVien" asp-action="Index">
+						<span class="align-middle">DANH BẠ NỘI BỘ</span>
+					</a>
+				}
+				else
+				{
+					<a class="sidebar-brand" asp-controller="NhanVien" asp-action="HoSoCaNhan">
+						<span class="align-middle">DANH BẠ NỘI BỘ</span>
+					</a>
+				}
+
+				<ul class="sidebar-nav">
+					@if (role == "Admin")
+					{
+						<li class="sidebar-header text-info">
+							HỆ THỐNG QUẢN LÝ
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-controller="NhanVien" asp-action="Index">
+								<i class="align-middle" data-feather="users"></i> <span class="align-middle">Danh bạ nhân viên</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-controller="NhanVien" asp-action="Create">
+								<i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Thêm nhân viên mới</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-controller="PhongBan" asp-action="Index">
+								<i class="align-middle" data-feather="layers"></i> <span class="align-middle">Quản lý phòng ban</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-controller="TaiKhoan" asp-action="Index">
+								<i class="align-middle" data-feather="shield"></i> <span class="align-middle">Tài khoản hệ thống</span>
+							</a>
+						</li>
+					}
+					else
+					{
+						<li class="sidebar-header text-info">
+							CÁ NHÂN
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-controller="NhanVien" asp-action="HoSoCaNhan">
+								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Hồ sơ cá nhân</span>
+							</a>
+						</li>
+					}
+
+					<li class="sidebar-header text-info">
+						TÀI KHOẢN
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" asp-controller="Account" asp-action="DoiMatKhau">
+							<i class="align-middle" data-feather="lock"></i> <span class="align-middle">Đổi mật khẩu</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link text-danger" asp-controller="Account" asp-action="Logout">
+							<i class="align-middle" data-feather="log-out"></i> <span class="align-middle">Đăng xuất</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<!-- KHUNG NỘI DUNG CHÍNH -->
+		<div class="main">
+			<!-- THANH HEADER TRÊN CÙNG -->
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+					<i class="hamburger align-self-center"></i>
+				</a>
+
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle d-inline-block" href="#" data-bs-toggle="dropdown">
+								<i class="align-middle me-1" data-feather="user"></i>
+								<span class="text-dark fw-bold">
+									Xin chào, @hoTen
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">
+								@if (role != "Admin")
+								{
+									<a class="dropdown-item" asp-controller="NhanVien" asp-action="HoSoCaNhan">
+										<i class="align-middle me-1" data-feather="user"></i> Hồ sơ cá nhân
+									</a>
+								}
+								<a class="dropdown-item" asp-controller="Account" asp-action="DoiMatKhau">
+									<i class="align-middle me-1" data-feather="lock"></i> Đổi mật khẩu
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
+									<i class="align-middle me-1" data-feather="log-out"></i> Đăng xuất
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
+			<!-- NỘI DUNG CÁC TRANG CON SẼ HIỂN THỊ TẠI ĐÂY -->
+			<main class="content">
+				<div class="container-fluid p-0">
+					@RenderBody()
+				</div>
+			</main>
+
+			<!-- CHÂN TRANG (FOOTER) -->
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<strong>Hệ thống Danh bạ Nhân viên Nội bộ</strong> &copy; 2026
+							</p>
+						</div>
+						<div class="col-6 text-end">
+							<span class="text-muted">Đồ án ASP.NET Core MVC</span>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<script src="~/js/app.js"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

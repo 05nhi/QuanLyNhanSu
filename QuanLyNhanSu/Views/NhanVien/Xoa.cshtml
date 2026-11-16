@@ -1,0 +1,52 @@
+﻿@model QuanLyNhanSu.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Xác nhận xóa nhân viên";
+}
+
+<div class="container mt-4" style="max-width: 550px;">
+    <div class="card border-danger shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0 fs-5">XÁC NHẬN XÓA NHÂN VIÊN</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-danger fw-bold text-center mb-4">Bạn có chắc chắn muốn xóa nhân viên này khỏi hệ thống không?</p>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 35%;">Mã nhân viên:</th>
+                    <td>@Model.MaNv</td>
+                </tr>
+                <tr>
+                    <th>Họ và tên:</th>
+                    <td><strong>@Model.HoTen</strong></td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>Số điện thoại:</th>
+                    <td>@Model.SoDienThoai</td>
+                </tr>
+                <tr>
+                    <th>Chức vụ:</th>
+                    <td>@Model.ChucVu</td>
+                </tr>
+                <tr>
+                    <th>Phòng ban:</th>
+                    <td>@Model.MaPhongNavigation?.TenPhong</td>
+                </tr>
+            </table>
+
+            <!-- asp-action="Delete" giữ nguyên để submit form về hàm POST Delete trong NhanVienController -->
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="MaNv" />
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Hủy bỏ</a>
+                    <button type="submit" class="btn btn-danger px-4">Xóa nhân viên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

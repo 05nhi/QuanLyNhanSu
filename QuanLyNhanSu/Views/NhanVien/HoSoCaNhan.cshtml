@@ -1,0 +1,105 @@
+﻿@model QuanLyNhanSu.Models.NhanVien
+
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+}
+
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-3"><strong>Hồ sơ cá nhân</strong> của tôi</h1>
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert-message">
+                <strong>Thành công!</strong> @ViewBag.Success
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Cột trái: Hiển thị Ảnh đại diện và Chức vụ -->
+        <div class="col-md-4 col-xl-3">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Ảnh đại diện</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img src="@(string.IsNullOrEmpty(Model.AnhDaiDien) ? "https://via.placeholder.com/128" : Model.AnhDaiDien)"
+                         alt="@Model.HoTen"
+                         class="img-fluid rounded-circle mb-2 border"
+                         style="width: 128px; height: 128px; object-fit: cover;" />
+                    <h5 class="card-title mb-0">@Model.HoTen</h5>
+                    <div class="text-muted mb-2">@Model.ChucVu</div>
+                    <div>
+                        <span class="badge bg-primary">@(Model.MaPhongNavigation?.TenPhong ?? "Chưa phân phòng")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột phải: Thông tin cố định và Form cập nhật -->
+        <div class="col-md-8 col-xl-9">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Thông tin chi tiết & Cập nhật</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Bắt buộc phải có enctype="multipart/form-data" để gửi file ảnh lên Controller -->
+                    <form asp-controller="NhanVien" asp-action="HoSoCaNhan" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Mã nhân viên</label>
+                                <input type="text" class="form-control bg-light" value="@Model.MaNv" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control bg-light" value="@Model.HoTen" readonly />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Email công ty</label>
+                                <input type="text" class="form-control bg-light" value="@Model.Email" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Phòng ban - Chức vụ</label>
+                                <input type="text" class="form-control bg-light" value="@(Model.MaPhongNavigation?.TenPhong) - @Model.ChucVu" readonly />
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+                        <h6 class="text-primary mb-3">Thông tin cá nhân được phép thay đổi</h6>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Số điện thoại</label>
+                            <input type="text" name="soDienThoai" class="form-control" value="@Model.SoDienThoai" placeholder="Nhập số điện thoại..." />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Địa chỉ liên hệ</label>
+                            <input type="text" name="diaChi" class="form-control" value="@Model.DiaChi" placeholder="Nhập địa chỉ hiện tại..." />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tải lên ảnh đại diện mới</label>
+                            <input type="file" name="fileAnh" class="form-control" accept="image/*" />
+                            <small class="text-muted">Hỗ trợ định dạng .jpg, .png, .jpeg</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-controller="Account" asp-action="DoiMatKhau" class="btn btn-outline-warning">
+                                Đổi mật khẩu
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

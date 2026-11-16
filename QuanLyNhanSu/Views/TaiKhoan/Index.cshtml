@@ -1,0 +1,85 @@
+﻿@model IEnumerable<QuanLyNhanSu.Models.TaiKhoan>
+
+@{
+    ViewData["Title"] = "Tài khoản hệ thống";
+}
+
+<div class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0"><strong>Quản lý</strong> Tài khoản hệ thống</h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="align-middle" data-feather="user-plus"></i> Cấp tài khoản mới
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert-message">@TempData["Success"]</div>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div class="alert-message">@TempData["Error"]</div>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover my-0">
+                <thead>
+                    <tr>
+                        <th>Tên đăng nhập</th>
+                        <th>Mật khẩu</th>
+                        <th>Tên hiển thị</th>
+                        <th>Nhân viên liên kết</th>
+                        <th>Quyền hạn</th>
+                        <th class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold text-primary">@item.Username</td>
+                            <td><code>@item.Password</code></td>
+                            <td>@item.HoTen</td>
+                            <td>
+                                @if (item.MaNvNavigation != null)
+                                {
+                                    <span>#@item.MaNv - @item.MaNvNavigation.HoTen</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">Tài khoản hệ thống (Không gắn NV)</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.Role == "Admin")
+                                {
+                                    <span class="badge bg-danger">Admin</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">User</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Edit" asp-route-id="@item.Username" class="btn btn-sm btn-warning">Sửa / Reset MK</a>
+                                @if (item.Username != Context.Session.GetString("Username"))
+                                {
+                                    <form asp-action="Delete" asp-route-id="@item.Username" method="post" class="d-inline"
+                                          onsubmit="return confirm('Xóa tài khoản @item.Username?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
